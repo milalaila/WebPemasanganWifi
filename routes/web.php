@@ -1,38 +1,28 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\SesiController;
+use App\Http\Controllers\KabupatenController;
+use App\Http\Controllers\WilayahController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KecamatanController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+Route::get('/provinsi', [WilayahController::class, 'indexProvinsi']);
+Route::post('/provinsi/store', [WilayahController::class, 'storeProvinsi'])->name('provinsi.store');
+Route::post('/provinsi/update/{id}', [WilayahController::class, 'updateProvinsi'])->name('provinsi.update');
+Route::delete('/provinsi/delete/{id}', [WilayahController::class, 'deleteProvinsi'])->name('provinsi.delete');
 
-Route::middleware(['guest'])->group(function(){
-    Route::get('/',[SesiController::class, 'index'])->name('login');
-    Route::post('/',[SesiController::class, 'login']);
-});
-Route::get('/home', function() {
-    return redirect('/admin');
-});
 
-Route::middleware(['auth'])->group(function(){
-    Route::get('/logout',[SesiController::class,'logout']);
-});
+Route::get('/kabupaten/provinsi/{provinsiId}', [WilayahController::class, 'kabupatenByProvinsi'])->name('kabupaten.by_provinsi');
+Route::post('/kabupaten/store', [WilayahController::class, 'storeKabupaten'])->name('kabupaten.store');
+Route::delete('/kabupaten/{kabupaten_id}', [WilayahController::class, 'destroyKabupaten'])->name('kabupaten.delete');
 
-//ADMIN
-Route::middleware(['auth', 'userAkses:admin'])->group(function() {
-    Route::get('/admin',[AdminController::class, 'admin']);
-});
+Route::get('/kabupaten', [KabupatenController::class, 'index'])->name('kabupaten.index');
+Route::delete('/kabupaten/{kabupaten_id}', [KabupatenController::class, 'destroy'])->name('kabupaten.delete');
+Route::get('/kabupaten/edit/{id}', [KabupatenController::class, 'edit'])->name('kabupaten.edit');
+Route::put('/kabupaten/{id}', [KabupatenController::class, 'update'])->name('kabupaten.update');
 
-//PELANGGAN
-Route::middleware(['auth', 'userAkses:pelanggan'])->group(function() {
-    Route::get('/pelanggan',[AdminController::class, 'pelanggan']);
-});
+Route::get('/kecamatan', [KecamatanController::class, 'index'])->name('kecamatan.index');
+Route::post('/kecamatan/store', [KecamatanController::class, 'store'])->name('kecamatan.store');
+Route::get('/kecamatan/edit/{id}', [KecamatanController::class, 'edit'])->name('kecamatan.edit');
+Route::put('/kecamatan/{id}', [KecamatanController::class, 'update'])->name('kecamatan.update');
+Route::delete('/kecamatan/{id}', [KecamatanController::class, 'destroy'])->name('kecamatan.delete');
+Route::get('/kecamatan/create', [KecamatanController::class, 'create'])->name('kecamatan.create');
