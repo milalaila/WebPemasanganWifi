@@ -1,9 +1,13 @@
 <?php
 
 use App\Http\Controllers\KabupatenController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\WilayahController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KecamatanController;
+
+use App\Http\Controllers\PaketWifiController;
+
 
 Route::get('/provinsi', [WilayahController::class, 'indexProvinsi']);
 Route::post('/provinsi/store', [WilayahController::class, 'storeProvinsi'])->name('provinsi.store');
@@ -20,9 +24,26 @@ Route::delete('/kabupaten/{kabupaten_id}', [KabupatenController::class, 'destroy
 Route::get('/kabupaten/edit/{id}', [KabupatenController::class, 'edit'])->name('kabupaten.edit');
 Route::put('/kabupaten/{id}', [KabupatenController::class, 'update'])->name('kabupaten.update');
 
+
 Route::get('/kecamatan', [KecamatanController::class, 'index'])->name('kecamatan.index');
 Route::post('/kecamatan/store', [KecamatanController::class, 'store'])->name('kecamatan.store');
 Route::get('/kecamatan/edit/{id}', [KecamatanController::class, 'edit'])->name('kecamatan.edit');
 Route::put('/kecamatan/{id}', [KecamatanController::class, 'update'])->name('kecamatan.update');
 Route::delete('/kecamatan/{id}', [KecamatanController::class, 'destroy'])->name('kecamatan.delete');
 Route::get('/kecamatan/create', [KecamatanController::class, 'create'])->name('kecamatan.create');
+
+//PELANGGAN
+Route::middleware(['auth', 'userAkses:pelanggan'])->group(function() {
+    Route::get('/pelanggan',[AdminController::class, 'pelanggan']);
+});
+
+Route::get('/daftar-paket', function () {
+    return view('daftarpaket');
+});
+
+
+Route::get('/daftar-paket', [PaketWifiController::class, 'index']);
+
+Route::resource('paketwifi', PaketWifiController::class);
+
+
