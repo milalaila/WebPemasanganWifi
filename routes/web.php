@@ -4,7 +4,12 @@ use App\Http\Controllers\KabupatenController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\WilayahController;
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\KecamatanController;
+
+use App\Http\Controllers\PaymentMethodController;
+ 
+
 
 use App\Http\Controllers\PaketWifiController;
 
@@ -37,6 +42,7 @@ Route::middleware(['auth', 'userAkses:pelanggan'])->group(function() {
     Route::get('/pelanggan',[AdminController::class, 'pelanggan']);
 });
 
+
 Route::get('/daftar-paket', function () {
     return view('daftarpaket');
 });
@@ -46,4 +52,7 @@ Route::get('/daftar-paket', [PaketWifiController::class, 'index']);
 
 Route::resource('paketwifi', PaketWifiController::class);
 
+
+Route::resource('admin/payment-methods', PaymentMethodController::class);
+Route::put('/payment-methods/{id}', [PaymentMethodController::class, 'update'])->name('payment_methods.update');
 

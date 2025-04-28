@@ -83,11 +83,11 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="#">
+          <a class="nav-link " href="{{ url('/admin/payment-methods')}}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-credit-card text-dark text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1">Review Pesanan</span>
+            <span class="nav-link-text ms-1">Metode Pembayaran</span>
           </a>
         </li>
         <li class="nav-item">
@@ -169,6 +169,9 @@
             <li class="nav-item d-flex align-items-center">
               <h6 class="text-white font-weight-bold px-0">
                   <i class="bi bi-person me-sm-1"></i>
+
+                  {{ auth()->check() ? auth()->user()->name : 'Guest' }}
+
               </h6>
             </li>        
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
@@ -442,6 +445,8 @@
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="{{ asset('tmp/assets/js/argon-dashboard.min.js?v=2.1.0')}}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>
