@@ -81,4 +81,19 @@ public function edit($id)
 
         return redirect()->route('kecamatan.index')->with('success', 'Kecamatan berhasil dihapus!');
     }
+
+    public function getByKabupaten($kab_id)
+    {
+        $kecamatan = Kecamatan::where('kabupaten_id', $kab_id)->get();
+    
+        return response()->json($kecamatan->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'nama' => $item->name
+            ];
+        }));
+    }
+    
+
+
 }

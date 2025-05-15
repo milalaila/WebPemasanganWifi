@@ -41,4 +41,23 @@ public function edit($id)
         ]);
         return redirect()->route('kabupaten.index')->with('success', 'Kabupaten berhasil diupdate!');
     }
+
+    public function getByProvinsi($prov_id)
+{
+    $kabupaten = Kabupaten::where('provinsi_id', $prov_id)->get();
+
+    return response()->json($kabupaten->map(function ($item) {
+        return [
+            'id' => $item->id,
+            'nama' => $item->name // karena di tabel kolomnya "name"
+        ];
+    }));
+}
+
+
+
+
+
+
+
 }

@@ -4,14 +4,11 @@ use App\Http\Controllers\KabupatenController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\WilayahController;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\KecamatanController;
-
 use App\Http\Controllers\PaymentMethodController;
- 
-
-
 use App\Http\Controllers\PaketWifiController;
+use App\Http\Controllers\OrderReviewController;
+use App\Http\Controllers\PelangganController;
 
 
 Route::get('/provinsi', [WilayahController::class, 'indexProvinsi']);
@@ -55,4 +52,18 @@ Route::resource('paketwifi', PaketWifiController::class);
 
 Route::resource('admin/payment-methods', PaymentMethodController::class);
 Route::put('/payment-methods/{id}', [PaymentMethodController::class, 'update'])->name('payment_methods.update');
+Route::get('/registrasi', [PelangganController::class, 'register'])->name('registrasi.form');
+Route::post('/registrasi/submit', [PelangganController::class, 'submit'])->name('registrasi.submit');
 
+Route::get('/get-kabupaten/{prov_id}', [PelangganController::class, 'getKabupaten']);
+Route::get('/get-kecamatan/{kab_id}', [PelangganController::class, 'getKecamatan']);
+
+
+Route::get('/order-review/create', [OrderReviewController::class, 'create']);
+Route::post('/order-review/store', [OrderReviewController::class, 'store']);
+
+Route::get('/admin/order-review', [OrderReviewController::class, 'index']);
+Route::post('/admin/order-review/accept/{id}', [OrderReviewController::class, 'accept']);
+Route::post('/admin/order-review/reject/{id}', [OrderReviewController::class, 'reject']);
+
+Route::get('/admin/order-review/history', [OrderReviewController::class, 'history']);

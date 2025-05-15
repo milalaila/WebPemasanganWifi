@@ -11,10 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payment_methods', function (Blueprint $table) {
+        Schema::create('order_reviews', function (Blueprint $table) {
             $table->id();
+            $table->string('nama');
+            $table->string('whatsapp');
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
+            $table->text('reason')->nullable();
             $table->timestamps();
         });
+        
     }
 
     /**
@@ -22,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payment_methods');
+        Schema::dropIfExists('order_reviews');
     }
 };
