@@ -1,31 +1,40 @@
-<!-- registrasi.blade.php -->
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Registrasi</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-
-<div class="container mt-5">
-    <h3>Form Registrasi Pelanggan</h3>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+@extends('layout.nosidebar')
+@section('content')
+    <div class="container">
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="judul">
+                <h1>Hai Cust,</h1>
+                <h4>Lengkapi seluruh informasi dibawah untuk mendapatkan layanan dari kami!</h4>
+            </div>
         </div>
-    @endif
+    </div>
 
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="header-data-diri">
+            <h4><b>Data Diri</b></h4>
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }} 
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif 
+            @if ($errors->any())
+                <div class="alert alert-danger">    
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle-fill"></i> 
+                Semua data ini wajib diisi untuk kebutuhan proses pemesanan kamu.
+            </div>    
+        </div>
 
     <form action="{{ route('registrasi.submit') }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -66,8 +75,6 @@
                 <option value="Lainnya">Lainnya</option>
             </select>
         </div>
-
-        
         <div class="mb-3">
             <label for="tanggal_pemasangan" class="form-label">Tanggal Pemasangan</label>
             <input type="date" class="form-control" name="tanggal_pemasangan" required>
@@ -224,5 +231,4 @@
         }
     });
 </script>
-</body>
-</html>
+@endsection

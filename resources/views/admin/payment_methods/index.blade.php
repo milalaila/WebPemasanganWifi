@@ -1,57 +1,75 @@
 @extends('layout.main')
 
 @section('content')
-<div class="container mt-5">
-    <h2>Daftar Metode Pembayaran</h2>
+<div class="container">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Metode Pembayaran</h5>
+                        
+                        <div class="d-flex align-items-center gap-2">
+                            @if(auth()->user()->role == 'admin')
+                            <button type="button" class="btn btn-primary btn-sm rounded-pill" style="background-color: #344767" data-bs-toggle="modal" data-bs-target="#tambahMetodeModal">
+                                <i class="bi bi-plus"></i>
+                                <span class="d-none d-md-inline">Tambah</span>
+                            </button>
+                            @endif
+                        </div>
+                    </div>                        
+                </div>
+            </div>
+        <div class="card">
+        <div class="card-body">
+                @if (session('success'))
+                    <div class="alert alert-success">{{ session('success') }}</div>
+                @endif
 
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+            <div class="table-responsive">
+                 <table class="table table-striped ">
+                    <thead style="text-align: center">
+                        <tr>
+                            <th>Nama Metode</th>
+                            <th>Tipe</th>
+                            <th>Nomor</th>
+                            <th>Atas Nama</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody style="text-align:center">
+                        @foreach($methods as $method)
+                            <tr>
+                                <td>{{ $method->nama_metode }}</td>
+                                <td>{{ ucfirst($method->tipe) }}</td>
+                                <td>{{ $method->nomor }}</td>
+                                <td>{{ $method->atas_nama }}</td>
+                                <td>
+                                    <a href="{{ route('payment-methods.edit', $method->id) }}" class="btn btn-warning btn-sm">
+                                        <i class="bi bi-pen"></i>
+                                    </a>
+                                    <form action="{{ route('payment-methods.destroy', $method->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin mau dihapus?')">
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
-    @endif
-
-    <!-- Tombol untuk buka modal -->
-    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#tambahMetodeModal">
-        + Tambah Metode
-    </button>
-
-    <table class="table table-bordered ">
-        <thead class="table-light">
-            <tr>
-                <th>Nama Metode</th>
-                <th>Tipe</th>
-                <th>Nomor</th>
-                <th>Atas Nama</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($methods as $method)
-                <tr>
-                    <td>{{ $method->nama_metode }}</td>
-                    <td>{{ ucfirst($method->tipe) }}</td>
-                    <td>{{ $method->nomor }}</td>
-                    <td>{{ $method->atas_nama }}</td>
-                    <td>
-                        <a href="{{ route('payment-methods.edit', $method->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                        <form action="{{ route('payment-methods.destroy', $method->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin mau dihapus?')">Hapus</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+    </div>
 
 
 <!-- Modal Tambah Metode -->

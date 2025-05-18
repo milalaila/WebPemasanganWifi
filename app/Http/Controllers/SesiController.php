@@ -20,9 +20,13 @@ class PelangganController extends Controller
         return view('registrasi', compact('provinsis', 'paketWifi'));
     }
 
+<<<<<<< Updated upstream
     // Menangani submission dari form
     public function submit(Request $request)
     {
+=======
+    function login(Request $request){
+>>>>>>> Stashed changes
         $request->validate([
             'nama' => 'required|string|max:255',
             'no_hp' => 'required|numeric',
@@ -53,6 +57,7 @@ class PelangganController extends Controller
 
         return redirect()->route('registrasi.form')->with('success', 'Pendaftaran berhasil');
     }
+<<<<<<< Updated upstream
 
     // Mengambil data Kabupaten berdasarkan Provinsi
     public function getKabupaten($provinsi_id)
@@ -66,5 +71,11 @@ class PelangganController extends Controller
     {
         $kecamatans = Kecamatan::where('kabupaten_id', $kabupaten_id)->get();
         return response()->json($kecamatans);
+=======
+    
+    function logout(){
+        Auth::logout();
+        return redirect('');
+>>>>>>> Stashed changes
     }
 }

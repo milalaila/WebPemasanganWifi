@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Wilayah;
+use App\Models\Kabupaten;
+use App\Models\Kecamatan;
 use App\Models\PaketWifi;
 use App\Models\PaymentMethod;
 use App\Models\Pelanggan;
@@ -61,7 +63,7 @@ class PelangganController extends Controller
     $prov = Provinsi::all(); // Sesuai dengan model Anda
     $paket = PaketWifi::all();
     $paymentMethods = PaymentMethod::all();
-    return view('registrasi', compact('paket', 'prov','paymentMethods'));
+    return view('register.register', compact('paket', 'prov','paymentMethods'));
 }
 
 public function getKabupaten($prov_id)
