@@ -10,69 +10,48 @@ use App\Models\Kabupaten;
 class KecamatanController extends Controller
 {
     public function index()
-{
-    $kecamatans = Kecamatan::with(['provinsi', 'kabupaten'])->get();
-    $provinsis = Provinsi::all();
-    $kabupatens = Kabupaten::all();
+    {
+        $kecamatans = Kecamatan::with(['provinsi', 'kabupaten'])->get();
+        $provinsis = Provinsi::all();
+        $kabupatens = Kabupaten::all();
 
-    return view('kecamatan.index', compact('kecamatans', 'provinsis', 'kabupatens'));
-}
+        return view('wilayah.kecamatan', compact('kecamatans', 'provinsis', 'kabupatens'));
+    }
 
-    public function create()
-{
-    $provinsis = Provinsi::all();
-    $kabupatens = Kabupaten::all();
-    return view('kecamatan.create', compact('provinsis', 'kabupatens'));
-}
+    public function store(Request $request)
+    {
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'provinsi_id' => 'required|exists:provinsis,id', 
+            'kabupaten_id' => 'required|exists:kabupatens,id', 
+        ]);
 
-
-public function store(Request $request)
-{
-    
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'provinsi_id' => 'required|exists:provinsis,id', 
-        'kabupaten_id' => 'required|exists:kabupatens,id', 
-    ]);
-
-    Kecamatan::create([
-        'name' => $request->name,
-        'provinsi_id' => $request->provinsi_id, 
-        'kabupaten_id' => $request->kabupaten_id,
-    ]);
-    return redirect()->route('kecamatan.index')->with('success', 'Kecamatan berhasil ditambahkan!');
-}
-
-
-
-public function edit($id)
-{
-    $kecamatan = Kecamatan::findOrFail($id);
-    $provinsis = Provinsi::all();
-    $kabupatens = Kabupaten::all();
-
-    return view('kecamatan.edit', compact('kecamatan', 'provinsis', 'kabupatens'));
-}
-
+        Kecamatan::create([
+            'name' => $request->name,
+            'provinsi_id' => $request->provinsi_id, 
+            'kabupaten_id' => $request->kabupaten_id,
+        ]);
+        return redirect()->route('kecamatan.index')->with('success', 'Kecamatan berhasil ditambahkan!');
+    }
 
     public function update(Request $request, $id)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'provinsi_id' => 'required|exists:provinsis,id',
-        'kabupaten_id' => 'required|exists:kabupatens,id',
-    ]);
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'provinsi_id' => 'required|exists:provinsis,id',
+            'kabupaten_id' => 'required|exists:kabupatens,id',
+        ]);
 
-    $kecamatan = Kecamatan::findOrFail($id);
-    $kecamatan->update([
-        'name' => $request->name,
-        'provinsi_id' => $request->provinsi_id,
-        'kabupaten_id' => $request->kabupaten_id,
-    ]);
+        $kecamatan = Kecamatan::findOrFail($id);
+        $kecamatan->update([
+            'name' => $request->name,
+            'provinsi_id' => $request->provinsi_id,
+            'kabupaten_id' => $request->kabupaten_id,
+        ]);
 
-    return redirect()->route('kecamatan.index')->with('success', 'Kecamatan berhasil diperbarui!');
-}
-
+        return redirect()->route('kecamatan.index')->with('success', 'Kecamatan berhasil diperbarui!');
+    }
 
     public function destroy($id)
     {

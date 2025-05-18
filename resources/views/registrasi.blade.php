@@ -98,7 +98,7 @@
         </div>
 
         
-        <!-- <div class="mb-3">
+        <div class="mb-3">
             <label for="kabupaten" class="form-label">Kabupaten</label>
             <select class="form-select" name="kabupaten_id" id="kabupaten">
                 <option value="">Pilih Kabupaten</option>
@@ -111,7 +111,7 @@
             <select class="form-select" name="kecamatan_id" id="kecamatan">
                 <option value="">Pilih Kecamatan</option>
             </select>
-        </div> -->
+        </div> 
 
         
         <div class="mb-3">

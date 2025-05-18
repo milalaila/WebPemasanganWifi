@@ -11,30 +11,13 @@ class PaketWifiController extends Controller
     public function index()
     {
         $pakets = PaketWifi::all();
-        return view('daftarpaket', compact('pakets'));
-    }
-
-    public function create()
-    {
-        return view('tambahpaket');
+        return view('paket.daftarpaket', compact('pakets'));
     }
 
     public function store(Request $request)
     {
         PaketWifi::create($request->all());
         return redirect()->route('paketwifi.index')->with('success', 'Paket berhasil ditambahkan');
-    }
-
-    public function show($id)
-    {
-        $paket = PaketWifi::findOrFail($id);
-        return view('detailpaket', compact('paket'));
-    }
-
-    public function edit($id)
-    {
-        $paket = PaketWifi::findOrFail($id);
-        return view('editpaket', compact('paket'));
     }
 
     public function update(Request $request, $id)

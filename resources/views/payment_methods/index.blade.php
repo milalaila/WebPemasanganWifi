@@ -37,6 +37,7 @@
                  <table class="table table-striped ">
                     <thead style="text-align: center">
                         <tr>
+                            <th>No</th>
                             <th>Nama Metode</th>
                             <th>Tipe</th>
                             <th>Nomor</th>
@@ -47,14 +48,15 @@
                     <tbody style="text-align:center">
                         @foreach($methods as $method)
                             <tr>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $method->nama_metode }}</td>
                                 <td>{{ ucfirst($method->tipe) }}</td>
                                 <td>{{ $method->nomor }}</td>
                                 <td>{{ $method->atas_nama }}</td>
                                 <td>
-                                    <a href="{{ route('payment-methods.edit', $method->id) }}" class="btn btn-warning btn-sm">
+                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editMetodeModal{{ $method->id }}">
                                         <i class="bi bi-pen"></i>
-                                    </a>
+                                    </button> 
                                     <form action="{{ route('payment-methods.destroy', $method->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
@@ -112,4 +114,51 @@
     </div>
 </div>
 </div> 
+
+                @foreach($methods as $metode)
+                <div class="modal fade" id="editMetodeModal{{ $metode->id }}" tabindex="-1" aria-labelledby="editMetodeModalLabel{{ $metode->id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="editMetodeModalLabel{{ $metode->id }}">Form Edit Metode Pembayaran</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ route('payment_methods.update', $metode->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="mb-3">
+                                        <label>Nama Metode</label>
+                                        <input type="text" name="nama_metode" class="form-control" value="{{ $method->nama_metode }}" required>
+                                    </div>
+                        
+                                    <div class="mb-3">
+                                        <label>Tipe</label>
+                                        <select name="tipe" class="form-control" required>
+                                            <option value="cod" {{ $method->tipe == 'cod' ? 'selected' : '' }}>COD</option>
+                                            <option value="bank" {{ $method->tipe == 'bank' ? 'selected' : '' }}>Bank</option>
+                                            <option value="ewallet" {{ $method->tipe == 'ewallet' ? 'selected' : '' }}>E-Wallet</option>
+                                            <option value="qris" {{ $method->tipe == 'qris' ? 'selected' : '' }}>QRIS</option>
+                                        </select>
+                                    </div>
+                        
+                                    <div class="mb-3">
+                                        <label>Nomor / QR Code</label>
+                                        <input type="text" name="nomor" class="form-control" value="{{ $method->nomor }}">
+                                    </div>
+                        
+                                    <div class="mb-3">
+                                        <label>Atas Nama</label>
+                                        <input type="text" name="atas_nama" class="form-control" value="{{ $method->atas_nama }}">
+                                    </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
 @endsection

@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Provinsi;
-use App\Models\Kabupaten;
-use App\Models\Kecamatan;
 use App\Models\PaketWifi;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class PelangganController extends Controller
+class SesiController extends Controller
 {
     // Menampilkan form registrasi
     public function form()
@@ -20,62 +19,41 @@ class PelangganController extends Controller
         return view('registrasi', compact('provinsis', 'paketWifi'));
     }
 
-<<<<<<< Updated upstream
-    // Menangani submission dari form
-    public function submit(Request $request)
-    {
-=======
-    function login(Request $request){
->>>>>>> Stashed changes
+    public function index() {
+        return view('login');
+    }
+
+    public function login(Request $request) {
         $request->validate([
-            'nama' => 'required|string|max:255',
-            'no_hp' => 'required|numeric',
-            'email' => 'required|email',
-            'alamat' => 'required|string',
-            'provinsi_id' => 'required|exists:provinsis,id',
-            'kabupaten_id' => 'required|exists:kabupatens,id',
-            'kecamatan_id' => 'required|exists:kecamatans,id',
-            'paket_wifi_id' => 'required|exists:paket_wifis,id',
-            'ktp_file' => 'required|file|mimes:jpg,png,pdf|max:2048',
+            'email' => 'required',
+            'password' => 'required'
+        ], [
+            'email.required' => 'Email wajib diisi.',
+            'password.required' => 'Password wajib diisi.'
         ]);
 
-        // Upload file KTP
-        $ktp_file_path = $request->file('ktp_file')->store('ktp_files');
+        $infologin = $request->only('email', 'password');
 
-        // Simpan data pelanggan
-        Pelanggan::create([
-            'nama' => $request->nama,
-            'no_hp' => $request->no_hp,
-            'email' => $request->email,
-            'alamat' => $request->alamat,
-            'provinsi_id' => $request->provinsi_id,
-            'kabupaten_id' => $request->kabupaten_id,
-            'kecamatan_id' => $request->kecamatan_id,
-            'paket_wifi_id' => $request->paket_wifi_id,
-            'ktp_file' => $ktp_file_path,
-        ]);
-
-        return redirect()->route('registrasi.form')->with('success', 'Pendaftaran berhasil');
-    }
-<<<<<<< Updated upstream
-
-    // Mengambil data Kabupaten berdasarkan Provinsi
-    public function getKabupaten($provinsi_id)
-    {
-        $kabupatens = Kabupaten::where('provinsi_id', $provinsi_id)->get();
-        return response()->json($kabupatens);
+        if(Auth::attempt($infologin)){
+            $role = Auth::user()->role;
+        
+            switch($role) {
+                case 'admin':
+                    return redirect('/admin')->with('success', 'Anda Berhasil Login ke Admin');
+                case 'pelanggan':
+                    return redirect('/pelanggan')->with('success', 'Anda Berhasil Login ke Pelanggan');
+                default:
+                    Auth::logout();
+                    return redirect()->back()->withErrors('Role tidak ditemukan.');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Username atau Password yang Anda masukkan salah.');
+        }
     }
 
-    // Mengambil data Kecamatan berdasarkan Kabupaten
-    public function getKecamatan($kabupaten_id)
-    {
-        $kecamatans = Kecamatan::where('kabupaten_id', $kabupaten_id)->get();
-        return response()->json($kecamatans);
-=======
     
     function logout(){
         Auth::logout();
-        return redirect('');
->>>>>>> Stashed changes
+        return redirect('/login');
     }
 }

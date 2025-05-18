@@ -10,7 +10,7 @@ class Pelanggan extends Model
 
     protected $fillable = [
         'nama', 'no_hp', 'email', 'alamat', 'provinsi_id',
-        // 'kabupaten_id', 'kecamatan_id',
+        'kabupaten_id', 'kecamatan_id',
         'paket_wifi_id',
         'payment_method_id', 'foto_ktp', 'nik', 'kebutuhan',
         'tanggal_pemasangan', 'total'

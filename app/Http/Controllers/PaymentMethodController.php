@@ -10,7 +10,7 @@ class PaymentMethodController extends Controller
     public function index()
     {
         $methods = PaymentMethod::all();
-        return view('admin.payment_methods.index', compact('methods'));
+        return view('payment_methods.index', compact('methods'));
     }
 
     public function create()

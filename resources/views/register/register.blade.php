@@ -119,29 +119,40 @@
                         @endforeach
                     </div>       
                 </div>   
-                <div class="form-group">
-                    <label for="prov">Provinsi*</label>
-                    <select id="prov" name="provinsi_id" class="form-control">
-                        <option value="">Pilih Provinsi</option>
-                        @foreach($prov as $p)
-                            <option value="{{ $p->id }}">{{ $p->name }}</option>
+                <div class="mb-3">
+                    <label for="payment_method_id" class="form-label">Metode Pembayaran</label>
+                    <select class="form-select" name="payment_method_id" required>
+                        <option value="">Pilih Metode</option>
+                        @foreach ($paymentMethods as $method)
+                            <option value="{{ $method->id }}">{{ $method->nama_metode }}</option>
                         @endforeach
                     </select>
                 </div>
+                <div class="mb-3">
+                    <label for="provinsi" class="form-label">Provinsi</label>
+                    <select class="form-select" name="provinsi_id" id="provinsi" required>
+                        <option value="">Pilih Provinsi</option>
+                        @foreach ($prov as $provinsi)
+                            <option value="{{ $provinsi->id }}">{{ $provinsi->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+        
                 
-                <div class="form-group">
-                    <label for="kab">Kabupaten*</label>
-                    <select id="kab" name="kabupaten_id" class="form-control">
+                <div class="mb-3">
+                    <label for="kabupaten" class="form-label">Kabupaten</label>
+                    <select class="form-select" name="kabupaten_id" id="kabupaten">
                         <option value="">Pilih Kabupaten</option>
                     </select>
                 </div>
+        
                 
-                <div class="form-group">
-                    <label for="kec">Kecamatan*</label>
-                    <select id="kec" name="kecamatan_id" class="form-control">
+                <div class="mb-3">
+                    <label for="kecamatan" class="form-label">Kecamatan</label>
+                    <select class="form-select" name="kecamatan_id" id="kecamatan">
                         <option value="">Pilih Kecamatan</option>
                     </select>
-                </div>
+                </div> 
                 
                 <div class="form-group">
                     <label for="alamat">Alamat Lengkap*</label>
